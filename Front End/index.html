@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>DDNS DApp</title>
+    <link rel="stylesheet" type="text/css" href="DDNS.css" />
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/sha256.min.js"></script>
+	<script src="https://unpkg.com/ipfs-api/dist/index.js"></script>
+    <script src="DDNS.js"></script>
+</head>
+
+<body>
+<header id="menu">
+    <a href="#" id="linkHome">Home</a>
+    <a href="#" id="linkGetDomainInfo">Get Domain Info</a>
+    <a href="#" id="linkRegisterDomain">Register Domain</a>
+	<a href="#" id="linkEditDomainIP">Edit Domain IP</a>
+	<a href="#" id="linkTransferDomain">Transfer Domain</a>
+	<a href="#" id="linkUploadDomainDocument">Upload Domain Document</a>
+	<a href="#" id="linkContractBalance">Contract Balance</a>
+</header>
+
+<main>
+    <section id="loadingBox">Loading ...</section>
+
+    <section id="infoBox"><header>x</header><p>Info</p></section>
+
+    <section id="errorBox"><header>x</header><p>Error</p></section>
+
+    <section id="viewHome">
+		<center><img  src="DDNS_logo.jpg" />
+        <h1> This app runs on the Ethereum blockchain network and holds a registry of domain names with a purchase option as Solidity smart contract.</h1>
+        <ul>
+            <li align="left">The <b>DDNS</b> keeps information for domain names as availability, owner, associated info document, etc.</li>
+            <li align="left"><b>Users</b> can register new available domain names which are stored on the blockchain using ETH.</li>
+            <li align="left"><b>Users</b> can view the information for the domains.</li>
+			<li align="left"><b>Domain owners</b> can transfer ownership and change the associated IP for already registered domains.</li>
+        </ul>
+    </section>
+
+    <section id="viewGetDomainInfo">
+        <h1>Query domain name information</h1>
+        <p>All users can check the ownership status of specific domain name and if available can aquire it.</p>
+		<p>Enter searched name: </p>
+        <textarea id="textareaDomainName"></textarea>
+		<input type="button" id="buttonQueryDomainName" value="Query"/>
+		<p>Domain name: </>
+		<textarea id="textareaDomainNameResult" class="result" readonly="true"></textarea>
+		<p>Domain Owner: </>
+        <textarea id="textareaDomainOwnerResult" class="result" readonly="true"></textarea>
+		<p>Domain IP: </>
+		<textarea id="textareaDomainIPResult" class="result" readonly="true"></textarea>
+		<p>Domain owned till: </>
+		<textarea id="textareaDomainValidityTime" class="result" readonly="true"></textarea>
+		<p>Info Document: </>
+		<textarea id="textareaDomainInfoDocumentHash" class="result" readonly="true"></textarea>
+    </section>
+
+    <section id="viewRegisterDomain">
+        <h1>Register a new domain.</h1>
+        <p>All users can buy and get ownership (or extend existing ownership) for an available domain name for 1 year. The price is 1 ETH per year.</p>
+		<p>Enter domain name: </p>
+        <textarea id="textareaDomainName"></textarea>	
+		<input type="button" id="buttonRegisterDomain" value="Register Domain"/>		
+    </section>
+	
+	<section id="viewEditDomainIP">
+        <h1>Edit owned domain IP Address.</h1>
+        <p>Owners can update the associated IP information for a specific domain.</p>
+		<p>Enter domain name: </p>
+        <textarea id="textareaDomainName"></textarea>
+		<p>Assign new IP address: </p>
+        <textarea id="textareaNewIP"></textarea>		
+		<input type="button" id="buttonEditDomain" value="Edit Domain"/>		
+    </section>
+	
+	<section id="viewTransferDomain">
+        <h1>Transfer domain ownership.</h1>
+        <p>Owners can transfer the domain ownership to a new owner (Ethereum Blockchain address).</p>
+		<p>Enter domain name: </p>
+        <textarea id="textareaDomainName"></textarea>	
+		<p>New Onwer's Ethereum Address: </p>
+        <textarea id="textareaNewOwner"></textarea>	
+		<input type="button" id="buttonTransferDomain" value="Transfer Domain"/>		
+    </section>
+	
+	<section id="viewUploadDomainDocument">
+        <h1>Upload informational document.</h1>
+        <p>Owners can upload a document (or update already uploaded one) for providing more details about the domain.</p>
+		<p>Enter domain name: </p>
+        <textarea id="textareaDomainName"></textarea>
+		<input type="file" id="documentForUpload" /><br/>
+        <input type="button" id="documentUploadButton" value="Upload" />	
+    </section>
+	
+	<section id="viewContractBalance">
+        <h1>Contract balance information.</h1>
+        <p>DDNS DApp owner can check the balance and withdraw collected ETH to an Ethereum address.</p>
+		<p>Balance: </p>
+		<textarea id="textareaBalance" class="result" readonly="true"></textarea>
+		<p>Enter amount to withdraw in ETH: </p>
+        <textarea id="textareaAmount"></textarea>
+		<input type="button" id="buttonWithdraw" value="Withdraw" />	
+    </section>
+	
+</main>
+
+<footer>Decentralized DNS - JavaScript & Ethereum DApp</footer>
+</body>
+</html>

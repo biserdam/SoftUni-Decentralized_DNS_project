@@ -7,10 +7,10 @@ body {
 
 #menu {
     font-weight: 400;
-    background: #DDD;
+    background: #FFA500;
     text-align: center;
     padding: 5px;
-    line-height: 1.5;
+    line-height: 2;
     border-radius: 3px;
     overflow: auto;
 }
@@ -70,7 +70,7 @@ section h1 {
 }
 
 footer {
-    background: #DDD;
+    background: #FFA500;
     padding: 5px 10px;
     font-size: 0.8em;
     text-align: center;
@@ -78,7 +78,7 @@ footer {
 }
 
 div {
-    border: 1px solid #DDD;
+    border: 1px solid #FFA500;
     border-radius: 4px;
     padding: 5px;
     max-width: 100%;
