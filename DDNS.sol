@@ -15,7 +15,7 @@ contract DDNS {
     Domain private firstDomain; 
     //Adds the first empty domain to assure index 0 from DomainList will not be used later.
     
-    Domain private newDomain;
+    //Domain private newDomain;
     
     mapping (string => uint) private DomainToIndex; 
     //Makes a mapping holding the registered domains mapped to an index from the array structure 
@@ -75,9 +75,9 @@ contract DDNS {
             DomainList[DomainToIndex[name]].lockTime += 365 days;
         }
         else {
-		    require(DomainList[DomainToIndex[name]].lockTime <= now, "Error: The domain is owned by someone else.");
+		    require(DomainList[DomainToIndex[name]].lockTime < now, "Error: The domain is owned by someone else.");
             DomainToIndex[name] = DomainList.length;
-          
+            Domain memory newDomain;
                 newDomain.name = name;
                 newDomain.IP = IP;
                 newDomain.owner = msg.sender;
@@ -109,11 +109,10 @@ contract DDNS {
         emit DomainTransferLog(name, newOwner, DomainList[DomainToIndex[name]].lockTime);
     }
     
-    //function AddDomainInfoDocument(string name) public 
-    //    OnlyDomainOwner(name) {
-    //        //SHALL ADD A FUNCTION TO UPLOAD TO IPFS DOMAIN INFORMATIONAL DOCUMENT.
-    //        DomainList[DomainToIndex[name]].infoDocumentHash = "Some IPFS Hash";
-    //}
+    function AddDomainInfoDocument(string name, string hash) public 
+        OnlyDomainOwner(name) {
+            DomainList[DomainToIndex[name]].infoDocumentHash = hash;
+    }
     
     function GetDomainInfo(string name) view public 
         StringLimit(name) 

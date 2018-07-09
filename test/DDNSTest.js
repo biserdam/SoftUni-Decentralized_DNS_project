@@ -38,7 +38,7 @@ contract("DDNS", accounts => {
 	
 	it("Test registering already registered once but expired domain(TimeTravel)", async () => {
     	await ddns.RegisterDomain('pesho.com', '1.2.3.4',{ from: firstAccount, value: 1 * ETH });
-		await increaseTime(YEAR);
+		await increaseTime(2 * YEAR);
 		try{
 			await ddns.RegisterDomain('pesho.com', '1.2.3.4', { from: secondAccount, value: 1 * ETH });
 		} catch (err){
@@ -148,6 +148,17 @@ contract("DDNS", accounts => {
 			return;
 		} catch (err) {
 			assert(false, 'failed to get the domain info');
+		}	
+	});
+	
+	it("Test uploading domain informational document", async () => {
+		await ddns.RegisterDomain('pesho.com', '1.2.3.4',{ from: firstAccount, value: 1 * ETH });
+		try {
+			await ddns.AddDomainInfoDocument('pesho.com', 'QmVm3pZKWxoQmQ8groW6Q9CoATQVNwarBwNrYmV5x7kPre', { from: firstAccount });
+			assert(true);
+			return;
+		} catch (err) {
+			assert(false, 'failed to upload domain info');
 		}	
 	});
 	
