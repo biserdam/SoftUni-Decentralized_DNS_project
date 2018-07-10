@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	const ddnsContractAddress = "0x6c5ba5720c7ba3b036b643c822f40da5491eb52b";
+	const ddnsContractAddress = "0x8bf5bb3103beec1037e6da3f2741e7f9a123df8b";
 	const ddnsContractABI = [
 	{
 		"constant": true,
@@ -237,7 +237,7 @@ $(document).ready(function () {
 	}
 ];
 	
-	const IPFS = window.IpfsApi( 'localhost', '5001');
+	const IPFS = window.IpfsApi({host: "localhost", port: 5001, protocol: "https"});
 	const Buffer = IPFS.Buffer;
 	
 	$('#linkHome').click(function () {
@@ -252,6 +252,7 @@ $(document).ready(function () {
 	$('#linkRegisterDomain').click(function () {
 		$('#textareaDomainName').val('');
 		$('#textareaDomainIP').val('');
+		$('#textareaETH').val('');
 		showView("viewRegisterDomain");
     });
 	
@@ -274,8 +275,10 @@ $(document).ready(function () {
 	});
 	
 	$('#linkContractBalance').click(function () {
+		$('#textareaBalance').val('');
 		$('#textareaAmount').val('');
 		showView("viewContractBalance");
+		
 	});
 	
 	$('#buttonQueryDomainName').click(GetDomainInfo);
@@ -284,6 +287,7 @@ $(document).ready(function () {
 	$('#buttonTransferDomain').click(TransferDomain);
 	$('#documentUploadButton').click(UploadDomainDocument);
 	$('#buttonWithdraw').click(ContractOwnerWithdraw);
+	$('#buttonBalance').click(GetContractBalance);
 
 	// Attach AJAX "loading" event listener
 	$(document).on({
@@ -332,8 +336,8 @@ $(document).ready(function () {
 			let domainLockTime = result[3];
 			let ipfsHash = result[4];
 			let div = $('<div>');
-			let url = "https://ipfs.io/ipfs/" + ipfsHash;
-			
+			//let url = 'https://ipfs.io/ipfs/' + ipfsHash;
+			//let url = 'https://ipfs.io/ipfs/QmPnh58j7658eXzcA9tNBmMi6CxeY1ZojTQv9mpT8xUiBk';
 			let displayDate = new Date(domainLockTime * 1000).toLocaleString();
 			
 			$('#textareaDomainNameResult').val(domainName);
@@ -341,11 +345,15 @@ $(document).ready(function () {
 			$('#textareaDomainOwnerResult').val(domainOwner);
 			$('#textareaDomainValidityTime').val(displayDate);
 			$('#textareaDomainInfoDocumentHash').val(ipfsHash);
+			
+			//$(`<img src="${url}" />`);
 						
-			div
-				.append($(`<img src="${url}" />`));
-			html.append(div);
+			//div
+			//	.append($(`<img src="${url}" />`));
+
 		});
+		//html.append('</div>');
+		//$('#viewGetDomainInfo').append(html);
 	}
 	
 	function RegisterDomain() {
@@ -353,7 +361,7 @@ $(document).ready(function () {
 			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
 	
 		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
-		contract.GetDomainInfo($('#textareaDomainName').val(), $('#textareaDomainIP').val(), function (err, txHash) {
+		contract.GetDomainInfo($('#textareaDomainName').val(), $('#textareaDomainIP').val(), { value: $('#textareaETH').val() * 1000000000000000000 }, function (err, txHash) {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
@@ -366,7 +374,7 @@ $(document).ready(function () {
 			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
 	
 		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
-		contract.EditDomain('#textareaDomainName', '#textareaDomainIP', function (err, txHash) {
+		contract.EditDomain($('#textareaDomainName').val(), $('#textareaDomainIP').val(), function (err, txHash) {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
@@ -379,7 +387,7 @@ $(document).ready(function () {
 			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
 	
 		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
-		contract.EditDomain('#textareaDomainName', '#textareaNewOwner', function (err, txHash) {
+		contract.EditDomain($('#textareaDomainName').val(), $('#textareaNewOwner').val(), function (err, txHash) {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
@@ -403,7 +411,7 @@ $(document).ready(function () {
 					return showError (err);
 				if (result) {
 					let ipfsHash = result[0].hash;
-					contract.AddDomainInfoDocument('#textareaDomainName', ipfsHash, function (err, txHash) {
+					contract.AddDomainInfoDocument($('#textareaDomainName').val(), ipfsHash, function (err, txHash) {
 						if (err)
 							return showError("Smart contract call failed: " + err);
 						showInfo(`Document ${ipfsHash} <b>successfully uploaded</b> to the domain. Transaction hash: ${txHash}`);
@@ -414,16 +422,31 @@ $(document).ready(function () {
 		fileReader.readAsArrayBuffer($('#documentForUpload')[0].files[0]);	
 	}
 	
+	function GetContractBalance() {
+		if(typeof web3 === 'undefined')
+			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
+	
+		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
+		contract.GetContractBalance( function (err, result) {
+			if (err)
+				return showError("Smart contract call failed: " + err);
+			
+			let balance = result[0];
+			$('#textareaBalance').val(balance);
+		});
+	}
+	
 	function ContractOwnerWithdraw() {
 		if(typeof web3 === 'undefined')
 			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
 	
 		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
-		contract.ContractOwnerWithdraw('#textareaAmount', function (err, txHash) {
+		
+		contract.ContractOwnerWithdraw(($('#textareaAmount').val()*1000000000000000000), function (err, txHash) {
 			if (err)
 				return showError("Smart contract call failed: " + err);
-			else			
-				showInfo(`Amount <b>successfully transferred</b>. Transaction hash: ${txHash}`);
+						
+			showInfo(`Amount <b>successfully transferred</b>. Transaction hash: ${txHash}`);
 		});
 	}
 	

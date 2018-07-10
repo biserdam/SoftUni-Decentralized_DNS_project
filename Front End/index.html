@@ -7,7 +7,6 @@
     <title>DDNS DApp</title>
     <link rel="stylesheet" type="text/css" href="DDNS.css"/>
     <script src="lib/jquery-3.1.1.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 	<script src="https://unpkg.com/ipfs-api/dist/index.js"></script>
     <script src="DDNS.js"></script>
@@ -56,7 +55,7 @@
 		<textarea id="textareaDomainIPResult" class="result" readonly="true"></textarea>
 		<p>Domain owned till: </>
 		<textarea id="textareaDomainValidityTime" class="result" readonly="true"></textarea>
-		<p>Info Document: </>
+		<p>Info Document IPFS Hash: </>
 		<textarea id="textareaDomainInfoDocumentHash" class="result" readonly="true"></textarea>
     </section>
 
@@ -67,6 +66,8 @@
         <textarea id="textareaDomainName"></textarea>
 		<p>Enter domain IP: </p>
 		<textarea id="textareaDomainIP"></textarea>
+		<p>Enter ETH amount: </p>
+		<textarea id="textareaETH"></textarea>
 		<input type="button" id="buttonRegisterDomain" value="Register Domain"/>		
     </section>
 	
@@ -104,6 +105,7 @@
         <p>DDNS DApp owner can check the balance and withdraw collected ETH to an Ethereum address.</p>
 		<p>Balance: </p>
 		<textarea id="textareaBalance" class="result" readonly="true"></textarea>
+		<input type="button" id="buttonBalance" value="Get Balance" />
 		<p>Enter amount to withdraw in ETH: </p>
         <textarea id="textareaAmount"></textarea>
 		<input type="button" id="buttonWithdraw" value="Withdraw" />	
