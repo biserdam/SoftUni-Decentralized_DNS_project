@@ -374,11 +374,11 @@ $(document).ready(function () {
 			return showError("Please install MetaMask to access the Ethereum Web3 API from your web browser.");
 	
 		let contract = web3.eth.contract(ddnsContractABI).at(ddnsContractAddress);
-		contract.EditDomain($('#textareaDomainName').val(), $('#textareaDomainIP').val(), function (err, txHash) {
+		contract.EditDomain($('#textareaDomainName').val(), $('#textareaDomainIP').val(), { gas: 100000 }, function (err, txHash) {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
-				showInfo(`Domain IP <b>successfully updated</b>. Transaction hash: ${txHash}`);
+				showInfo(`Domain IP <b>successfully updated</b>. Transaction hash: ${txHash}`);				
 		});
 	}
 	
@@ -409,15 +409,14 @@ $(document).ready(function () {
 			IPFS.files.add(fileBuffer, (err, result) => {
 				if (err)
 					return showError (err);
-				if (result) {
-					let ipfsHash = result[0].hash;
-					contract.AddDomainInfoDocument($('#textareaDomainName').val(), ipfsHash, function (err, txHash) {
-						if (err)
-							return showError("Smart contract call failed: " + err);
-						showInfo(`Document ${ipfsHash} <b>successfully uploaded</b> to the domain. Transaction hash: ${txHash}`);
-					})
-				}
-			})
+				
+				let ipfsHash = result[0].hash;
+				contract.AddDomainInfoDocument($('#textareaDomainName').val(), ipfsHash, function (err, txHash) {
+					if (err)
+						return showError("Smart contract call failed: " + err);
+					showInfo(`Document ${ipfsHash} <b>successfully uploaded</b> to the domain. Transaction hash: ${txHash}`);
+				});
+			});			
 		};
 		fileReader.readAsArrayBuffer($('#documentForUpload')[0].files[0]);	
 	}
@@ -431,8 +430,8 @@ $(document).ready(function () {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			
-			let balance = result[0];
-			$('#textareaBalance').val(balance);
+			let balance = result;
+			$('#textareaBalance').val(balance/1000000000000000000);
 		});
 	}
 	
