@@ -27,18 +27,21 @@ contract DDNS {
     
     constructor() public {
         contractOwner = msg.sender;
+            
+    //first empty domain will be assigned to 0 index of the DomainList and DomainToIndex mapping since 
+    //by default all values are 0. Then during the if registered check the first domain added 
+    //will give false if on index 0 is a valid domain.
             firstDomain.name = "empty";
             firstDomain.IP = "n/a";
             firstDomain.owner = 0;
             firstDomain.lockTime = 0;
             firstDomain.infoDocumentHash = "n/a";
         
-        //first empty domain will be assigned to 0 index of the DomainList and DomainToIndex mapping since 
-        //by default all values are 0 then during the if registered check the first domain added will give false.
         DomainToIndex[firstDomain.name] = 0;
         DomainList.push(firstDomain);
     }
     
+    //Since the shortest possible domain names are of 4 symbols the modifier checks if the name is less than that in length
     modifier StringLimit(string name) {
         bytes memory stringBytes = bytes(name);
         if(stringBytes.length < 4)
