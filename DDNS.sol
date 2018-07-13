@@ -76,6 +76,7 @@ contract DDNS {
         
         if(msg.sender == DomainList[DomainToIndex[name]].owner) {
             DomainList[DomainToIndex[name]].lockTime += 365 days;
+			DomainList[DomainToIndex[name]].IP = IP;
         }
         else {
 		    require(DomainList[DomainToIndex[name]].lockTime < now, "Error: The domain is owned by someone else.");

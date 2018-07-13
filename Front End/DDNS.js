@@ -333,6 +333,7 @@ $(document).ready(function () {
 			let domainLockTime = result[3];
 			let ipfsHash = result[4];
 			let displayDate = new Date(domainLockTime * 1000).toLocaleString();
+			let url = "https://ipfs.io/ipfs/" + ipfsHash;
 			
 			$('#textareaDomainNameResult').val(domainName);
 			$('#textareaDomainIPResult').val(domainIP);
@@ -341,14 +342,16 @@ $(document).ready(function () {
 				$('#textareaDomainValidityTime').val(displayDate);
 			else
 				$('#textareaDomainValidityTime').val('Domain is available for purchase');
+			
 			$('#textareaDomainInfoDocumentHash').val(ipfsHash);
 						
 			if (ipfsHash !== 'Not Available' && ipfsHash !== 'n/a'){
+				$('#textareaDomainInfoDocumentHash').val(url);
 				let html = jQuery('<div>');
-				let div = jQuery('<div>');
-				let url = "https://ipfs.io/ipfs/" + ipfsHash;
+				let div = jQuery('<div>');				
 				div
-					.append(jQuery(`<img src="${url}" alt="Loading..." class="ipfsImage"/>`))
+					//.append(jQuery(`<img src="${url}" alt="Loading..." class="ipfsImage"/>`))
+					.append(jQuery(`<img src="${url}" class="ipfsImage"/>`))
 				html.append(div);
 				html.append('</div>');
 				jQuery('#viewGetDomainInfo').append(html);
