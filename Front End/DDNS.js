@@ -1,5 +1,7 @@
 $(document).ready(function () {
-	const ddnsContractAddress = "0x8bf5bb3103beec1037e6da3f2741e7f9a123df8b";
+	
+	//const ddnsContractAddress = "0x8bf5bb3103beec1037e6da3f2741e7f9a123df8b"; //Ganache local contract address
+	const ddnsContractAddress = "0x3434baeeef7737e83f10b50fa27434c17e0b473c"; //Ropsten contract address
 	
 	const ddnsContractABI = [
 	{
@@ -368,7 +370,7 @@ $(document).ready(function () {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
-				showInfo(`Domain <b>successfully registered</b>. Transaction hash: ${txHash}`);
+				showInfo(`Transaction hash: ${txHash}`);
 		});
 	}
 	
@@ -381,7 +383,7 @@ $(document).ready(function () {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
-				showInfo(`Domain IP <b>successfully updated</b>. Transaction hash: ${txHash}`);				
+				showInfo(`Transaction hash: ${txHash}`);				
 		});
 	}
 	
@@ -394,7 +396,7 @@ $(document).ready(function () {
 			if (err)
 				return showError("Smart contract call failed: " + err);
 			else			
-				showInfo(`Domain owner <b>successfully updated</b>. Transaction hash: ${txHash}`);
+				showInfo(`Transaction hash: ${txHash}`);
 		});
 	}
 		
@@ -423,7 +425,7 @@ $(document).ready(function () {
 					contract.AddDomainInfoDocument($('#textareaDomainNameUpload').val(), ipfsHash, function (err, txHash) {
 						if (err)
 							return showError("Smart contract call failed: " + err);
-						showInfo(`Document ${ipfsHash} <b>successfully uploaded</b> to the domain. Transaction hash: ${txHash}`);
+						showInfo(`IPFS Document ${ipfsHash}. Transaction hash: ${txHash}`);
 					});
 				}
 			});			
